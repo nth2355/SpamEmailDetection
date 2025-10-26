@@ -60,23 +60,18 @@ def evaluate_model(y_true, y_pred, model_name):
 
 
 def train_and_compare_traditional():
-    print("--- BẮT ĐẦU CHƯƠNG TRÌNH ---") # Dòng này phải in ra ngay lập tức
-    
-    print("--- Bắt đầu Huấn luyện và So sánh Mô hình Truyền thống ---")
+    print("--- BẮT ĐẦU CHƯƠNG TRÌNH ---")
     
     # 1. Tải dữ liệu
     try:
-            # File đã có header ('label' và 'text'), không cần header=None
             df = pd.read_csv(DATA_PATH) 
-            
-            # Đảm bảo các cột label và text tồn tại
+  
             if 'label' not in df.columns or 'text' not in df.columns:
                 raise ValueError("File CSV phải có cột 'label' và 'text'.")
 
             print(f"Đã tải {len(df)} mẫu dữ liệu. Kiểm tra NA...") 
         
     except FileNotFoundError:
-            # Nếu vẫn gặp lỗi này, hãy kiểm tra lại tên thư mục và tên file!
             print(f"LỖI QUAN TRỌNG: KHÔNG TÌM THẤY FILE DỮ LIỆU TẠI {DATA_PATH}.")
             return
     except Exception as e:

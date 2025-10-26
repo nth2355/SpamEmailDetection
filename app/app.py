@@ -29,11 +29,10 @@ def home():
     return render_template('index.html')
 @app.route('/predict', methods=['POST'])
 def predict():
-    """Xử lý yêu cầu dự đoán và trả về xác suất."""
     if model is None:
         return render_template('index.html', prediction_text="Lỗi: Mô hình chưa được tải."), 500
 
-    message = request.form.get('message_text') # Lấy dữ liệu an toàn hơn
+    message = request.form.get('message_text') 
 
     try:
         if not message:
@@ -43,14 +42,14 @@ def predict():
         probabilities = model.predict_proba([message])[0] 
         
         # 2. Tính xác suất dưới dạng phần trăm
-        prob_ham = probabilities[0] * 100  # Xác suất cho lớp 0 (HAM)
-        prob_spam = probabilities[1] * 100 # Xác suất cho lớp 1 (SPAM)
+        prob_ham = probabilities[0] * 100  
+        prob_spam = probabilities[1] * 100 
         
         # 3. Quyết định nhãn cuối cùng 
         if prob_spam >= 50:
-            final_label = "⚠️ THƯ RÁC (SPAM)"
+            final_label = "🚨 THƯ RÁC (SPAM)"
         else:
-            final_label = "✅ THƯ HỢP LỆ (HAM)"
+            final_label = "✔️ THƯ HỢP LỆ (HAM)"
         
         # 4. Trả về kết quả (Dòng return thành công)
         return render_template('index.html', 
@@ -60,14 +59,11 @@ def predict():
                                 input_text=message)
     
     except Exception as e:
-        # DÒNG RETURN KHI XẢY RA LỖI (Đã kiểm tra)
         print(f"LỖI TRONG CHỨC NĂNG DỰ ĐOÁN: {e}")
         return render_template('index.html', 
                                prediction_text=f"Đã xảy ra lỗi hệ thống: {e}", 
                                input_text=message)
     
-    # DÒNG RETURN AN TOÀN CUỐI CÙNG (Dù không cần thiết nếu logic đủ tốt)
-    # return render_template('index.html', prediction_text="Lỗi logic không xác định.", input_text=message)
 
 if __name__ == '__main__':
     # Chạy ứng dụng web
